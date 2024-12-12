@@ -294,7 +294,7 @@ def main(args):
     summary_all_folds = {}
     
     #1-fold
-    folds = np.arange(0, 1)
+    folds = np.arange(0, 5)
     for i in folds:
         start_t = timer()
         seed_torch(args.seed)
@@ -308,8 +308,8 @@ def main(args):
         # Gets the Train + Val Dataset Loader.
         train_dataset, val_dataset = dataset.return_splits(from_id=False,
                                                            #csv_path='{}/splits_{}.csv'.format(args.split_dir, i)
-                                                           csv_path= f"./splits/1foldcv/tcga_{args.dataset}/splits_1.csv")
-                                                           #csv_path="/data_20/yinwendong/HMFM/splits/1foldcv/tcga_blca/splits_1.csv")
+                                                           #csv_path= f"./splits/1foldcv/tcga_{args.dataset}/splits_1.csv")
+                                                           csv_path= f"./splits/5foldcv_new/tcga_{args.dataset}/splits_{i}.csv")
         
 
         print('training: {}, validation: {}'.format(

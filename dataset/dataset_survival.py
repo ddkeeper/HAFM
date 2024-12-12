@@ -250,8 +250,8 @@ class Generic_MIL_Survival_Dataset(Generic_WSI_Survival_Dataset):
         self.data_dir = data_dir
         self.mode = mode
         self.use_h5 = False
-        self.directory_path = os.path.join(data_dir, 'pt_files')
-        #self.directory_path = data_dir #condensed brca feature
+        #self.directory_path = os.path.join(data_dir, 'pt_files')
+        self.directory_path = data_dir #condensed brca feature
     def load_from_h5(self, toggle):
         self.use_h5 = toggle
 
@@ -369,7 +369,8 @@ class Generic_Split(Generic_MIL_Survival_Dataset):
         self.label_col = label_col
         self.patient_dict = patient_dict
         self.slide_cls_ids = [[] for i in range(self.num_classes)]
-        self.directory_path = os.path.join(data_dir, 'pt_files')
+        #self.directory_path = os.path.join(data_dir, 'pt_files')
+        self.directory_path = data_dir #condensed brca feature
         for i in range(self.num_classes):
             self.slide_cls_ids[i] = np.where(self.slide_data['label'] == i)[0]
 

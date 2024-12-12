@@ -95,7 +95,7 @@ class MCAT_Surv(nn.Module):
         A_path = torch.transpose(A_path, 1, 0)
         h_path = torch.mm(F.softmax(A_path, dim=1) , h_path)
         h_path = self.path_rho(h_path).squeeze()
-        print(f"shape of h_path: {h_path.shape}")
+        #print(f"shape of h_path: {h_path.shape}")
         ### Omic
         #print(f"shape of h_omic_bag: {h_omic_bag.shape}")
         h_omic_trans = self.omic_transformer(h_omic_bag)

@@ -172,7 +172,7 @@ def train(datasets: tuple, cur: int, args: Namespace):
         model_dict = {'omic_sizes': args.omic_sizes, 'n_classes': args.n_classes, 'n_bottlenecks': args.n_bottlenecks, 'soft_mode': args.soft_mode}
         model = MoMETransformer(**model_dict)
     elif args.model_type == 'amfm' or args.model_type == 'hmfm':
-        from models.model_amfm import MoMETransformer, HMFMTransformer
+        from models.model_amfm import MoMETransformer, AMFMTransformer
         model_dict = {
             'omic_sizes': args.omic_sizes, 
             'n_classes': args.n_classes, 
@@ -188,7 +188,7 @@ def train(datasets: tuple, cur: int, args: Namespace):
         if args.model_type == 'amfm':
             model = MoMETransformer(**model_dict)
         else:
-           model = HMFMTransformer(**model_dict) 
+           model = AMFMTransformer(**model_dict) 
     else:
         raise NotImplementedError
     

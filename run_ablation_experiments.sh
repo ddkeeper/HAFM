@@ -1,35 +1,24 @@
 #!/bin/bash
 
-# 设置控制变量
-DATASET="gbmlgg"
-TASK_TYPE="survival"
-MODEL_TYPE="hmfm"
-GATING_NET="CosMLP"
-MAX_EXPERT=4
-PROJ_DIM=256
-SEED=5
-C_REG=0
+dataset="ucec"
+seed=6
 
-# 基础路径设置
-BASE_DIR="/data_20/yinwendong/AMFM/results_${DATASET}/${MODEL_TYPE}"  # 使用完整的绝对路径
-DATA_ROOT="/data_20/yinwendong/MCAT-master/data"
-DATE=$(date +%Y_%m_%d)
+# 第一组命令 (CoA和SNN)
+python main.py --model_type hmfm --apply_sig --results_dir ./results_${dataset}/hafm/1foldcv_Cos_HMFM_No_CoAFusion_survival_train_max_4_pdim_256_AE2_RP_d4_s${seed} --dataset ${dataset} --mome_gating_network CosMLP --c_reg 0 --data_root_dir /root/sspaas-fs/ --max_expert 4 --seed ${seed} --mome_ablation_expert_id 0 > ./results_${dataset}/hafm/survival_HMFM_train_max_4_pdim_256_AE2_RP_d4_NoCoA_s${seed}_2024_12_6.txt &
+pid1=$!
 
-# 通用参数
-COMMON_PARAMS="--model_type ${MODEL_TYPE} --apply_sig --dataset ${DATASET} --task_type ${TASK_TYPE} --mome_gating_network ${GATING_NET} --c_reg ${C_REG} --data_root_dir ${DATA_ROOT} --max_expert ${MAX_EXPERT} --seed ${SEED}"
+python main.py --model_type hmfm --apply_sig --results_dir ./results_${dataset}/hafm/1foldcv_Cos_HMFM_No_SNNFusion_survival_train_max_4_pdim_256_AE2_RP_d4_s${seed} --dataset ${dataset} --mome_gating_network CosMLP --c_reg 0 --data_root_dir /root/sspaas-fs/ --max_expert 4 --seed ${seed} --mome_ablation_expert_id 1 > ./results_${dataset}/hafm/survival_HMFM_train_max_4_pdim_256_AE2_RP_d4_NoSNN_s${seed}_2024_12_6.txt &
+pid2=$!
 
-# 执行第一个命令
-python main.py ${COMMON_PARAMS} --results_dir ${BASE_DIR}/1foldcv_${GATING_NET}_${MODEL_TYPE}_No_CoAFusion_${TASK_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d4_BPE_s${SEED} --mome_ablation_expert_id 0 --mof_ablation_expert_id 0 > ${BASE_DIR}/${DATASET}_${TASK_TYPE}_${MODEL_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d1_BPE_No_CoAFusion_${DATE}.txt
-wait $!
+# 等待第一组命令完全执行完
+wait $pid1 $pid2
 
-# 执行第二个命令
-python main.py ${COMMON_PARAMS} --results_dir ${BASE_DIR}/1foldcv_${GATING_NET}_${MODEL_TYPE}_No_SNNFusion_${TASK_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d4_BPE_s${SEED} --mome_ablation_expert_id 1 --mof_ablation_expert_id 0 > ${BASE_DIR}/${DATASET}_${TASK_TYPE}_${MODEL_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d1_BPE_No_SNNFusion_${DATE}.txt
-wait $!
+# 第二组命令 (MIL和Zero)
+python main.py --model_type hmfm --apply_sig --results_dir ./results_${dataset}/hafm/1foldcv_Cos_HMFM_No_MILFusion_survival_train_max_4_pdim_256_AE2_RP_d4_s${seed} --dataset ${dataset} --mome_gating_network CosMLP --c_reg 0 --data_root_dir /root/sspaas-fs/ --max_expert 4 --seed ${seed} --mome_ablation_expert_id 2 > ./results_${dataset}/hafm/survival_HMFM_train_max_4_pdim_256_AE2_RP_d4_NoMIL_s${seed}_2024_12_6.txt &
+pid3=$!
 
-# 执行第三个命令
-python main.py ${COMMON_PARAMS} --results_dir ${BASE_DIR}/1foldcv_${GATING_NET}_${MODEL_TYPE}_No_MILFusion_${TASK_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d4_BPE_s${SEED} --mome_ablation_expert_id 2 --mof_ablation_expert_id 0 > ${BASE_DIR}/${DATASET}_${TASK_TYPE}_${MODEL_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d1_BPE_No_MILFusion_${DATE}.txt
-wait $!
+python main.py --model_type hmfm --apply_sig --results_dir ./results_${dataset}/hafm/1foldcv_Cos_HMFM_No_ZeroFusion_survival_train_max_4_pdim_256_AE2_RP_d4_s${seed} --dataset ${dataset} --mome_gating_network CosMLP --c_reg 0 --data_root_dir /root/sspaas-fs/ --max_expert 4 --seed ${seed} --mome_ablation_expert_id 3 > ./results_${dataset}/hafm/survival_HMFM_train_max_4_pdim_256_AE2_RP_d4_NoZero_s${seed}_2024_12_6.txt &
+pid4=$!
 
-# 执行第四个命令
-python main.py ${COMMON_PARAMS} --results_dir ${BASE_DIR}/1foldcv_${GATING_NET}_${MODEL_TYPE}_No_ZeroFusion_${TASK_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d4_BPE_s${SEED} --mome_ablation_expert_id 3 --mof_ablation_expert_id 0 > ${BASE_DIR}/${DATASET}_${TASK_TYPE}_${MODEL_TYPE}_train_max_${MAX_EXPERT}_pdim_${PROJ_DIM}_d1_BPE_No_ZeroFusion_${DATE}.txt
-wait $!
+# 等待第二组命令完全执行完
+wait $pid3 $pid4
