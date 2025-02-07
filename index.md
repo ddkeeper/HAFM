@@ -81,10 +81,10 @@
 <div align="center">
 <h3>开始学习：</h3>
 
-<a href="fundamentals/" class="md-button md-button--primary">LLM 基础知识</a>
+[LLM 基础知识](fundamentals/index.md#){ .md-button .md-button--primary }
 
-<a href="scientist/" class="md-button">LLM 科学家</a>
+[LLM 科学家](scientist/index.md#){ .md-button }
 
-<a href="engineer/" class="md-button">LLM 工程师</a>
-</div> 
+[LLM 工程师](engineer/index.md#){ .md-button }
+</div>
 
